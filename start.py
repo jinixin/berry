@@ -3,15 +3,18 @@
 import tornado.ioloop
 import tornado.web
 
+from handler.task_handler import TaskListHandler
 
-class MainHandler(tornado.web.RequestHandler):
+
+class TestHandler(tornado.web.RequestHandler):
     def get(self):
         self.write("Hello, world")
 
 
 def make_app():
     return tornado.web.Application([
-        (r"/", MainHandler),
+        (r'/', TestHandler),
+        (r'/task/list', TaskListHandler),
     ])
 
 

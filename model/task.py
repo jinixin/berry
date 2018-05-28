@@ -21,7 +21,7 @@ class Task(object):
             return {}
 
         return {
-            'task_id': obj[cls.task_id],
+            'task_id': str(obj[cls.task_id]),
             'title': obj[cls.title],
             'start_time': obj[cls.start_time],
             'end_time': obj.get(cls.end_time, -1),
@@ -45,3 +45,8 @@ class Task(object):
     def find(cls, task_id):
         ret = cls.collection.find_one(filter={cls.task_id: task_id})
         return cls.to_dict(ret)
+
+    @classmethod
+    def list(cls, page=0, count=20):
+        ret = cls.collection.find(skip=page * count, limit=count)
+        return [cls.to_dict(item) for item in ret]
