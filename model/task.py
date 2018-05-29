@@ -10,10 +10,12 @@ class Task(object):
 
     task_id = '_id'
     title = 'ti'
+    create_time = 'ct'
     start_time = 'st'
     end_time = 'et'
     status = 's'
     level = 'lv'
+    own_user = 'ou'
 
     @classmethod
     def to_dict(cls, obj):
@@ -23,20 +25,23 @@ class Task(object):
         return {
             'task_id': str(obj[cls.task_id]),
             'title': obj[cls.title],
-            'start_time': obj[cls.start_time],
+            'create_time': obj[cls.create_time],
+            'start_time': obj.get(cls.start_time, -1),
             'end_time': obj.get(cls.end_time, -1),
             'status': obj[cls.status],
             'level': obj[cls.level],
+            'own_user': obj[cls.own_user]
         }
 
     @classmethod
-    def insert(cls, title):
+    def insert(cls, user_id, title):
         ret = cls.collection.insert_one({
             cls.task_id: ObjectId(),
             cls.title: title,
-            cls.start_time: int(time.time()),
+            cls.create_time: int(time.time()),
             cls.status: 0,
             cls.level: 0,
+            cls.own_user: user_id,
         })
 
         return ret.inserted_id if ret else None

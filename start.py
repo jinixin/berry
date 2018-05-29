@@ -1,5 +1,6 @@
 # coding=utf-8
 
+import os
 import tornado.ioloop
 import tornado.web
 
@@ -12,13 +13,20 @@ class TestHandler(tornado.web.RequestHandler):
 
 
 def make_app():
-    return tornado.web.Application([
-        (r'/', TestHandler),
-        (r'/task/list', TaskListHandler),
-    ])
+    base_path = os.getcwd()
+    settings = {
+        'template_path': os.path.join(base_path, 'view'),
+        'static_path': os.path.join(base_path, 'view/static'),
+    }
+    return tornado.web.Application(
+        handlers=[
+            (r'/', TestHandler),
+            (r'/task/list', TaskListHandler),
+        ],
+        **settings,
+    ).listen(8888)
 
 
 if __name__ == "__main__":
-    app = make_app()
-    app.listen(8888)
+    make_app()
     tornado.ioloop.IOLoop.current().start()
