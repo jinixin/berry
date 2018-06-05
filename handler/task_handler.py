@@ -5,6 +5,11 @@ from model import Task
 from tool import NumTool
 
 
+class IndexHandler(BaseHandler):
+    def _get(self):
+        self.render('index.html')
+
+
 class TaskListHandler(BaseHandler):
     def _get(self):
         page = NumTool.str2int(self.get_argument('page', 0))  # 默认会去除前后的空格

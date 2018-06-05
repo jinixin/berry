@@ -4,7 +4,8 @@ import os
 import tornado.ioloop
 import tornado.web
 
-from handler.task_handler import TaskListHandler
+from handler.task_handler import TaskListHandler, IndexHandler
+from handler.user_handler import UserLoginHandler
 
 
 class TestHandler(tornado.web.RequestHandler):
@@ -20,8 +21,9 @@ def make_app():
     }
     return tornado.web.Application(
         handlers=[
-            (r'/', TestHandler),
+            (r'/', IndexHandler),
             (r'/task/list', TaskListHandler),
+            (r'/user/login', UserLoginHandler, None, 'user_login'),
         ],
         **settings,
     ).listen(8888)

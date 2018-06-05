@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block body %}
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#doLogin").click(function(){
+            $.ajax({
+                url: "{{ reverse_url('user_login') }}",
+                data: $("#loginForm").serialize(),
+                type: "POST",
+                dataType: "json",
+                async: false,
+                complete: function(response){
+                    ret = response.responseJSON.ret;
+                    if (ret == 1) {
+                        alert('OK');
+                    } else {
+                        alert('Error');
+                    }
+                }
+            });
+        });
+    });
+</script>
+
+<p class="text-right">
+    Hello, world<br/>
+    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#loginModal">登录</button>
+</p>
+
+<!-- Modal -->
+<div class="modal fade" id="loginModal" role="dialog" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form id="loginForm">
+                    <input type="text" class="form-control" name="email" placeholder="email"/><br>
+                    <input type="text" class="form-control" name="password" placeholder="密码"/>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" id="doLogin">登录</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% end %}
